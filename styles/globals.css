@@ -1,6 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;700;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    font-family: "Unbounded", cursive, sans-serif;
+  }
+}
 
 /* :root {
   --max-width: 1100px;
