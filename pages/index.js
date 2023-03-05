@@ -1,151 +1,118 @@
+import Image from "next/image";
+
 export default function Home() {
   return (
-    <div>
-      <h1 className="bg-red-400">Zwierzeta Domowe</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        suscipit, quia repellat veniam inventore laudantium totam nobis corrupti
-        praesentium adipisci dignissimos commodi aliquam laborum eligendi
-        tempore alias hic, animi quod.
-      </p>
+    <div className="text-center">
+      <h1 className="text-4xl mt-10">
+        Zwierzęta domowe w polskich domach w UK
+      </h1>
+      <div className="h-48 mt-20 px-10 flex justify-around bg-slate-100">
+        <Image
+          src="/images/doggy1-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/doggy2-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/doggy3-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/doggy4-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/doggy5-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/doggy6-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/kitty1-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/kitty2-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/kitty3-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/kitty4-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/kitty5-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/parrot1-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/parrot2-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/rabbit1-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+        <Image
+          src="/images/rabbit2-circled.png"
+          alt="doggy1"
+          className="object-contain"
+          width={60}
+          height={60}
+        />
+      </div>
     </div>
   );
 }

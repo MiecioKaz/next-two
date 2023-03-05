@@ -32,7 +32,7 @@ const Navbar = () => {
           Zaloguj
         </Link>
       </div>
-      <div className="flex h-1/2">
+      <div className="inline-flex h-1/2">
         <Image
           src="/images/icons8-poland-48.png"
           alt="Poland icon by Icons8"
