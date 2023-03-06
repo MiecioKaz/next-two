@@ -3,13 +3,13 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 w-screen flex justify-between items-center h-24 bg-slate-200">
+    <nav className="fixed top-0 w-screen flex justify-between items-center h-24 bg-slate-200 border-b border-slate-300">
       <Image
         src="/images/icons8-pets-96.png"
         alt="Pets icon by Icons8"
         className="ml-4"
-        width={90}
-        height={90}
+        width={70}
+        height={70}
       />
 
       <div className="flex justify-between items-center text-xl w-5/12 h-3/4">

@@ -3,114 +3,15 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="text-center">
-      <h1 className="text-4xl mt-10">
+      <h1 className="text-4xl text-gray-600 mt-10">
         Zwierzęta domowe w polskich domach w UK
       </h1>
-      <div className="h-48 mt-20 px-10 flex justify-around bg-slate-100">
+      <div className="relative w-5/6 h-5/6 overflow-hidden">
         <Image
-          src="/images/doggy1-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/doggy2-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/doggy3-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/doggy4-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/doggy5-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/doggy6-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/kitty1-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/kitty2-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/kitty3-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/kitty4-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/kitty5-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/parrot1-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/parrot2-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/rabbit1-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
-        />
-        <Image
-          src="/images/rabbit2-circled.png"
-          alt="doggy1"
-          className="object-contain"
-          width={60}
-          height={60}
+          src="/images/dog-contour.jpg"
+          alt="dog-contour"
+          width={200}
+          height={200}
         />
       </div>
     </div>

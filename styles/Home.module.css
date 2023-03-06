@@ -1,0 +1,16 @@
+/* .box {
+  position: relative;
+  background: #60a0d0;
+}
+.box::after {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 100%;
+  width: 300%;
+  height: 300px;
+  margin: -292px 0 0 -100%;
+  background: #60a0d0;
+  border-radius: 50%;
+  content: "";
+} */
