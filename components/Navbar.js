@@ -1,9 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useLogout } from "../hooks/useLogout";
 
 const Navbar = () => {
+  const { logout } = useLogout();
+
   return (
-    <nav className="fixed top-0 w-screen flex justify-between items-center h-24 bg-slate-200 border-b border-slate-300">
+    <nav className="fixed top-0 w-screen flex justify-between items-center h-24 mt-24 bg-slate-200">
       <div className="ml-10 relative text-sm">
         <Image
           src="/images/dog-cat-contour.jpg"
@@ -40,6 +43,13 @@ const Navbar = () => {
           className="text-gray-600 hover:text-lime-500"
         >
           Zaloguj
+        </Link>
+        <Link
+          onClick={logout}
+          href="/"
+          className="text-gray-600 hover:text-lime-500"
+        >
+          Wyloguj
         </Link>
       </div>
       <div className="inline-flex h-1/2">
