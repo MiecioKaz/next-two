@@ -19,22 +19,28 @@ const Details = () => {
   const handleFileChange = (e) => {
     setPetImage(null);
     let selected = e.target.files[0];
-    console.log(selected);
+    console.log(selected.type);
 
     if (!selected) {
       setImgError("Please select a file");
       return;
     }
-    // if (!selected.type.includes("image")) {
-    //   setImgError("Selected file must be an image");
-    //   return;
-    // }
+    if (
+      selected.type !== "image/jpeg" &&
+      selected.type !== "image/png" &&
+      selected.type !== "image/jpg"
+    ) {
+      setImgError(
+        "Akceptujemy zdjęcia tylko w formacie 'png' 'jpg' lub 'jpeg'"
+      );
+      return;
+    }
     // if (selected.size > 100000) {
     //   setImgError("Image file size must be less than 100kB");
     //   return;
     // }
 
-    setFormError(null);
+    setImgError(null);
     setPetImage(selected);
   };
 
@@ -44,7 +50,7 @@ const Details = () => {
 
     if (!user) {
       setFormError(
-        "Przed rejestacją zwierzaka wymagane zalogowanie się do systemu"
+        "Przed rejestacją zwierzaka wymagane zalogowanie do systemu"
       );
       return;
     }
@@ -64,9 +70,9 @@ const Details = () => {
     };
 
     await addDocument(petDetails, optionSet, petImage, breed);
-    if (!state.error) {
-      router.push("/");
-    }
+    // if (!state.error) {
+    //   router.push("/");
+    // }
   };
 
   return (
@@ -94,6 +100,7 @@ const Details = () => {
             type="file"
             onChange={handleFileChange}
           />
+          {imgError ? <p>{imgError}</p> : ""}
         </div>
         <div>
           <h2>Rasa zwierzaka</h2>

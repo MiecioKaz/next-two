@@ -67,7 +67,7 @@ export const useFirestore = () => {
 
       const addedDocument = await addDoc(collection(db, coll), {
         ...doc,
-        createdAt: serverTimestamp(),
+        // createdAt: serverTimestamp(),
         petImageUrl: imgUrl,
       });
       conditionalDispatch({ type: "ADDED_DOCUMENT", payload: addedDocument });

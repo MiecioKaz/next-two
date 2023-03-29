@@ -17,7 +17,7 @@ const Signup = () => {
 
   return (
     <div>
-      <h1>Signup</h1>
+      <h1>Rejestracja użytkownika</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <h2>Twój email adres</h2>
