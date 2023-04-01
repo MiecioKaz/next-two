@@ -3,7 +3,7 @@ import Image from "next/image";
 const PetData = ({ detailsSet }) => {
   return (
     <div className="">
-      <div className="relative block w-52 h-52 mx-auto">
+      <div className="relative block w-72 h-72 mx-auto">
         <Image
           src={detailsSet.petImageUrl}
           alt="pet-image"
@@ -12,7 +12,7 @@ const PetData = ({ detailsSet }) => {
         />
       </div>
 
-      <div className=" mx-auto w-52 p-4 border-x-2 border-b-2 border-slate-300 bg-white">
+      <div className=" mx-auto w-72 p-4 border-x-2 border-b-2 border-slate-300 bg-white">
         <h2 className="italic text-sm">Miejsce pobytu:</h2>
         <p className="text-black">{detailsSet.whereabouts}</p>
         <h2 className="italic text-sm mt-1.5">Opis zwierzaka:</h2>

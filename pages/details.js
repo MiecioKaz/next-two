@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useFirestore } from "../hooks/useFirestore";
 import { useAuthContext } from "../hooks/useAuthContext";
+import Link from "next/link";
 
 const Details = () => {
   const [optionSet, setOptionSet] = useState("");
@@ -21,10 +22,6 @@ const Details = () => {
     let selected = e.target.files[0];
     console.log(selected.type);
 
-    if (!selected) {
-      setImgError("Please select a file");
-      return;
-    }
     if (
       selected.type !== "image/jpeg" &&
       selected.type !== "image/png" &&
@@ -59,7 +56,6 @@ const Details = () => {
       name: user.displayName,
       email: user.email,
       phoneNumber,
-      id: user.uid,
     };
 
     const petDetails = {
@@ -67,6 +63,7 @@ const Details = () => {
       description,
       whereabouts,
       createdBy,
+      id: user.uid,
     };
 
     await addDocument(petDetails, optionSet, petImage, breed);
@@ -77,7 +74,7 @@ const Details = () => {
 
   return (
     <div>
-      <h1>Create Document</h1>
+      <h1>Rejestracja zwierzaka</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <h2>Powód rejestracji</h2>
@@ -93,15 +90,16 @@ const Details = () => {
             <option value="newHome">Do przyjęcia</option>
           </select>
         </div>
-        <div>
-          <h2>Zdjęcie zwierzaka</h2>
-          <input
-            required
-            type="file"
-            onChange={handleFileChange}
-          />
-          {imgError ? <p>{imgError}</p> : ""}
-        </div>
+        {optionSet !== "newHome" && (
+          <div>
+            <h2>Zdjęcie zwierzaka</h2>
+            <input
+              type="file"
+              onChange={handleFileChange}
+            />
+            {imgError ? <p>{imgError}</p> : ""}
+          </div>
+        )}
         <div>
           <h2>Rasa zwierzaka</h2>
           <select
@@ -147,6 +145,9 @@ const Details = () => {
 
         {formError && <p>{formError}</p>}
       </form>
+      <Link href={`/show/${user.uid}`}>
+        Pokaż szczegóły rejestracji mojego zwierzaka
+      </Link>
     </div>
   );
 };

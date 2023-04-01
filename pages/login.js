@@ -38,7 +38,14 @@ const Login = () => {
         </div>
         <button>Zaloguj</button>
       </form>
-      {user && <Link href="/details">Zarejestruj zwierzaka</Link>}
+      {user && (
+        <>
+          <Link href={`/show/${user.uid}`}>
+            Pokaż szczegóły rejestracji mojego zwierzaka
+          </Link>
+          <Link href="/details">Zarejestruj zwierzaka</Link>
+        </>
+      )}
     </div>
   );
 };

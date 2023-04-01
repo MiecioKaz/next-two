@@ -12,7 +12,7 @@ const Footer = () => {
         </Link>
         <Link
           href="/infoFiles/termsPol.html"
-          className="block block hover:underline"
+          className="block hover:underline"
         >
           Warunki Użytkowania
         </Link>

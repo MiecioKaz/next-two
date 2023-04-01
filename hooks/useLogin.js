@@ -5,7 +5,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
-  const [isPendind, setIsPending] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [isCancelled, setIsCancelled] = useState(false);
   const { dispatch } = useAuthContext();
 
@@ -36,5 +36,5 @@ export const useLogin = () => {
     return () => setIsCancelled(true);
   }, []);
 
-  return { login, error, isPendind };
+  return { login, error, isPending };
 };

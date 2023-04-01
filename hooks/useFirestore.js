@@ -71,6 +71,11 @@ export const useFirestore = () => {
         petImageUrl: imgUrl,
       });
       conditionalDispatch({ type: "ADDED_DOCUMENT", payload: addedDocument });
+
+      await addDoc(collection(db, "users"), {
+        id: user.uid,
+        collName: coll,
+      });
     } catch (err) {
       conditionalDispatch({ type: "ERROR", payload: err.message });
     }
