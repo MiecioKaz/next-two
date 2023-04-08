@@ -49,7 +49,7 @@ const Signup = () => {
 
         <button type="submit">Zarejestruj</button>
       </form>
-      {user && <Link href="/details">Zarejestruj zwierzaka</Link>}
+      {user && <Link href={`/details/${user.uid}`}>Zarejestruj zwierzaka</Link>}
     </div>
   );
 };

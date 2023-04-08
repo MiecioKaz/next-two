@@ -43,7 +43,7 @@ const Login = () => {
           <Link href={`/show/${user.uid}`}>
             Pokaż szczegóły rejestracji mojego zwierzaka
           </Link>
-          <Link href="/details">Zarejestruj zwierzaka</Link>
+          <Link href={`/details/${user.uid}`}>Zarejestruj zwierzaka</Link>
         </>
       )}
     </div>

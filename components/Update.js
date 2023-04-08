@@ -1,26 +1,26 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { useFirestore } from "../hooks/useFirestore";
-import { useAuthContext } from "../hooks/useAuthContext";
-import Link from "next/link";
+// import { setDoc, doc } from "firebase/firestore";
+// import { db, storage } from "../firebase/config";
+// import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-const Details = () => {
-  const [optionSet, setOptionSet] = useState("");
-  const [description, setDescription] = useState("");
-  const [whereabouts, setWhereabouts] = useState("");
-  const [breed, setBreed] = useState("");
+const Update = ({ petDoc, userDoc }) => {
+  const [description, setDescription] = useState(petDoc[0].description);
+  const [breed, setBreed] = useState(petDoc[0].breed);
+  const [phoneNumber, setPhoneNumber] = useState(
+    petDoc[0].createdBy.phoneNumber
+  );
+  const [whereabouts, setWhereabouts] = useState(petDoc[0].whereabouts);
+  const [email, setEmail] = useState(petDoc[0].createdBy.email);
+  const [name, setName] = useState(petDoc[0].createdBy.name);
   const [petImage, setPetImage] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [formError, setFormError] = useState(null);
   const [imgError, setImgError] = useState(null);
-  const { addDocument, state } = useFirestore();
-  const router = useRouter();
-  const { user } = useAuthContext();
+  const [isCancelled, setIsCancelled] = useState(false);
+  const { updateDocument, state } = useFirestore();
 
   const handleFileChange = (e) => {
     setPetImage(null);
     let selected = e.target.files[0];
-    console.log(selected.type);
 
     if (
       selected.type !== "image/jpeg" &&
@@ -43,18 +43,14 @@ const Details = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormError(null);
 
-    if (!user) {
-      setFormError(
-        "Przed rejestacją zwierzaka wymagane zalogowanie do systemu"
-      );
-      return;
-    }
+    // const collName = userDoc[0].collName;
+    // const docId = petDoc[0].docId;
+    // const imgUrl = petDoc[0].petImageUrl;
 
     const createdBy = {
-      name: user.displayName,
-      email: user.email,
+      name,
+      email,
       phoneNumber,
     };
 
@@ -63,36 +59,17 @@ const Details = () => {
       description,
       whereabouts,
       createdBy,
-      id: user.uid,
+      id: petDoc[0].id,
     };
 
-    await addDocument(petDetails, optionSet, petImage, breed);
-    // if (!state.error) {
-    //   router.push("/");
-    // }
+    await updateDocument(petDetails, petDoc, userDoc, petImage);
   };
 
   return (
     <div>
-      <h1>Rejestracja zwierzaka</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <h2>Powód rejestracji</h2>
-          <select
-            onChange={(e) => setOptionSet(e.target.value)}
-            required
-            value={optionSet}
-          >
-            <option value="">Wybierz opcję</option>
-            <option value="lost">Zaginięcie</option>
-            <option value="found">Przygarnięcie</option>
-            <option value="relocate">Do oddania</option>
-            <option value="newHome">Do przyjęcia</option>
-          </select>
-        </div>
-        {optionSet !== "newHome" && (
+        {userDoc[0].collName !== "newHome" && (
           <div>
-            <h2>Zdjęcie zwierzaka</h2>
             <input
               type="file"
               onChange={handleFileChange}
@@ -100,6 +77,7 @@ const Details = () => {
             {imgError ? <p>{imgError}</p> : ""}
           </div>
         )}
+
         <div>
           <h2>Rasa zwierzaka</h2>
           <select
@@ -113,6 +91,36 @@ const Details = () => {
             <option value="other">Inne</option>
           </select>
         </div>
+
+        <div>
+          <h2>Twoje imię:</h2>
+          <input
+            type="text"
+            required
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+          />
+        </div>
+
+        <div>
+          <h2>Adres email:</h2>
+          <input
+            type="text"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+          />
+        </div>
+
+        <div>
+          <h2>Twój numer telefonu</h2>
+          <input
+            type="text"
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            value={phoneNumber}
+          />
+        </div>
+
         <div>
           <h2>Opis zwierzaka</h2>
           <textarea
@@ -124,6 +132,7 @@ const Details = () => {
             rows="10"
           ></textarea>
         </div>
+
         <div>
           <h2>Rejon Zaginięcia/Miejsce pobytu</h2>
           <input
@@ -133,23 +142,11 @@ const Details = () => {
             value={whereabouts}
           />
         </div>
-        <div>
-          <h2>Twój numer telefonu</h2>
-          <input
-            type="text"
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            value={phoneNumber}
-          />
-        </div>
-        <button type="submit">Zapisz Dane</button>
 
-        {formError && <p>{formError}</p>}
+        <button>Edytuj</button>
       </form>
-      <Link href={`/show/${user.uid}`}>
-        Pokaż szczegóły rejestracji mojego zwierzaka
-      </Link>
     </div>
   );
 };
 
-export default Details;
+export default Update;

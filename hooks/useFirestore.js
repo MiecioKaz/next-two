@@ -1,8 +1,13 @@
-import { useEffect, useReducer, useState } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { useReducer, useState } from "react";
+import { collection, addDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { db, storage } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 
 let initialState = {
   document: null,
@@ -45,45 +50,104 @@ const firestoreReducer = (state, action) => {
 
 export const useFirestore = () => {
   const [state, dispatch] = useReducer(firestoreReducer, initialState);
-  const [isCancelled, setIsCancelled] = useState(false);
   const { user } = useAuthContext();
 
-  const conditionalDispatch = (action) => {
-    if (!isCancelled) {
-      dispatch(action);
-    }
-  };
-
-  const addDocument = async (doc, coll, petImage, breed) => {
+  const addDocument = async (petDetails, coll, petImage, breed) => {
     dispatch({ type: "IS_PENDING" });
 
     try {
-      const uploadPath = ref(
-        storage,
-        `${coll}/${breed}/${user.uid}/${petImage.name}`
-      );
-      const img = await uploadBytes(uploadPath, petImage);
-      const imgUrl = await getDownloadURL(ref(storage, uploadPath));
+      let imgUrl;
+      if (petImage) {
+        const uploadPath = ref(
+          storage,
+          `${coll}/${breed}/${user.uid}/${petImage.name}`
+        );
+        await uploadBytes(uploadPath, petImage);
+        imgUrl = await getDownloadURL(ref(storage, uploadPath));
 
-      const addedDocument = await addDoc(collection(db, coll), {
-        ...doc,
-        // createdAt: serverTimestamp(),
-        petImageUrl: imgUrl,
-      });
-      conditionalDispatch({ type: "ADDED_DOCUMENT", payload: addedDocument });
+        await addDoc(collection(db, coll), {
+          ...petDetails,
+          petImageUrl: imgUrl,
+        });
+        dispatch({
+          type: "ADDED_DOCUMENT",
+          payload: { ...petDetails, petImageUrl: imgUrl },
+        });
+      } else {
+        await addDoc(collection(db, coll), {
+          ...petDetails,
+        });
+        dispatch({ type: "ADDED_DOCUMENT", payload: petDetails });
+      }
 
       await addDoc(collection(db, "users"), {
+        name: user.displayName,
         id: user.uid,
         collName: coll,
       });
     } catch (err) {
-      conditionalDispatch({ type: "ERROR", payload: err.message });
+      dispatch({ type: "ERROR", payload: err.message });
     }
   };
 
-  useEffect(() => {
-    return () => setIsCancelled(true);
-  }, []);
+  const updateDocument = async (petDetails, petDoc, userDoc, petImage) => {
+    dispatch({ type: "IS_PENDING" });
 
-  return { state, addDocument };
+    try {
+      let imgUrl;
+      if (petImage) {
+        const uploadPath = ref(
+          storage,
+          `${userDoc[0].collName}/${petDoc[0].breed}/${petDoc[0].id}/${petImage.name}`
+        );
+        await uploadBytes(uploadPath, petImage);
+        imgUrl = await getDownloadURL(ref(storage, uploadPath));
+
+        await setDoc(doc(db, userDoc[0].collName, petDoc[0].docId), {
+          ...petDetails,
+          petImageUrl: imgUrl,
+        });
+        dispatch({
+          type: "UPDATED_DOCUMENT",
+          payload: { ...petDetails, petImageUrl: imgUrl },
+        });
+      } else {
+        if ("petImageUrl" in petDoc[0]) {
+          imgUrl = petDoc[0].petImageUrl;
+          await setDoc(doc(db, userDoc[0].collName, petDoc[0].docId), {
+            ...petDetails,
+            petImageUrl: imgUrl,
+          });
+          dispatch({
+            type: "UPDATED_DOCUMENT",
+            payload: { ...petDetails, petImageUrl: imgUrl },
+          });
+        } else {
+          await setDoc(doc(db, userDoc[0].collName, petDoc[0].docId), {
+            ...petDetails,
+          });
+          dispatch({ type: "UPDATED_DOCUMENT", payload: petDetails });
+        }
+      }
+    } catch (err) {
+      dispatch({ type: "ERROR", payload: err.message });
+    }
+  };
+
+  const deleteDocument = async (petDoc, userDoc) => {
+    try {
+      if ("petImageUrl" in petDoc[0]) {
+        const imgRef = ref(storage, petDoc[0].petImageUrl);
+        await deleteObject(imgRef);
+      }
+      await deleteDoc(doc(db, userDoc[0].collName, petDoc[0].docId));
+      await deleteDoc(doc(db, "users", userDoc[0].userDocId));
+      dispatch({ type: "DELETED_DOCUMENT" });
+    } catch (err) {
+      dispatch({ type: "ERROR", payload: err.message });
+    }
+  };
+  console.log(state.document);
+
+  return { state, addDocument, updateDocument, deleteDocument };
 };
