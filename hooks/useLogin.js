@@ -9,32 +9,24 @@ export const useLogin = () => {
   const [isCancelled, setIsCancelled] = useState(false);
   const { dispatch } = useAuthContext();
 
-  const login = (email, password) => {
+  const login = async (email, password) => {
     setError(null);
     setIsPending(true);
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
 
         dispatch({ type: "LOGIN", payload: user });
-        if (!isCancelled) {
-          setError(null);
-          setIsPending(false);
-        }
+        setError(null);
+        setIsPending(false);
       })
       .catch((error) => {
-        if (!isCancelled) {
-          setError(error.message);
-          setIsPending(false);
-        }
+        setError(error.message);
+        setIsPending(false);
       });
   };
-
-  useEffect(() => {
-    return () => setIsCancelled(true);
-  }, []);
+  console.log(error);
 
   return { login, error, isPending };
 };

@@ -2,26 +2,23 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import Link from "next/link";
 
 export async function getServerSideProps(context) {
   const { userId } = context.params;
 
-  const userDoc = [];
-  const q = query(collection(db, "users"), where("id", "==", userId));
-  const querySnapshot = await getDocs(q);
+  const docSnap = await getDoc(doc(db, "pets", userId));
 
-  querySnapshot.forEach((doc) => {
-    userDoc.push({ ...doc.data() });
-  });
+  const isDocument = docSnap.exists();
+
   return {
-    props: { userDoc },
+    props: { isDocument },
   };
 }
 
-const Details = ({ userDoc }) => {
+const Details = ({ isDocument }) => {
   const [optionSet, setOptionSet] = useState("");
   const [description, setDescription] = useState("");
   const [whereabouts, setWhereabouts] = useState("");
@@ -32,7 +29,10 @@ const Details = ({ userDoc }) => {
   const [imgError, setImgError] = useState(null);
   const { addDocument, state } = useFirestore();
   const router = useRouter();
+  const { userId } = router.query;
   const { user } = useAuthContext();
+
+  console.log(isDocument);
 
   const handleFileChange = (e) => {
     setPetImage(null);
@@ -49,10 +49,6 @@ const Details = ({ userDoc }) => {
       );
       return;
     }
-    // if (selected.size > 100000) {
-    //   setImgError("Image file size must be less than 100kB");
-    //   return;
-    // }
 
     setImgError(null);
     setPetImage(selected);
@@ -76,106 +72,110 @@ const Details = ({ userDoc }) => {
     };
 
     const petDetails = {
+      coll: optionSet,
       breed,
       description,
       whereabouts,
       createdBy,
-      id: user.uid,
+      docId: userId,
     };
 
-    await addDocument(petDetails, optionSet, petImage, breed);
-    // if (!state.error) {
-    //   router.push("/");
-    // }
+    await addDocument(petDetails, petImage, userId);
+    if (!state.error) {
+      router.push("/");
+    }
   };
 
-  return (
-    <div>
-      {userDoc.length === 0 ? (
-        <>
-          <h1>Rejestracja zwierzaka</h1>
-          <form onSubmit={handleSubmit}>
+  if (!isDocument) {
+    return (
+      <div>
+        <h1>Rejestracja zwierzaka</h1>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <h2>Powód rejestracji</h2>
+            <select
+              onChange={(e) => setOptionSet(e.target.value)}
+              required
+              value={optionSet}
+            >
+              <option value="">Wybierz opcję</option>
+              <option value="lost">Zaginięcie</option>
+              <option value="found">Przygarnięcie</option>
+              <option value="relocate">Do oddania</option>
+              <option value="newHome">Do przyjęcia</option>
+            </select>
+          </div>
+          {optionSet !== "newHome" && (
             <div>
-              <h2>Powód rejestracji</h2>
-              <select
-                onChange={(e) => setOptionSet(e.target.value)}
-                required
-                value={optionSet}
-              >
-                <option value="">Wybierz opcję</option>
-                <option value="lost">Zaginięcie</option>
-                <option value="found">Przygarnięcie</option>
-                <option value="relocate">Do oddania</option>
-                <option value="newHome">Do przyjęcia</option>
-              </select>
-            </div>
-            {optionSet !== "newHome" && (
-              <div>
-                <h2>Zdjęcie zwierzaka</h2>
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                />
-                {imgError ? <p>{imgError}</p> : ""}
-              </div>
-            )}
-            <div>
-              <h2>Rasa zwierzaka</h2>
-              <select
-                onChange={(e) => setBreed(e.target.value)}
-                required
-                value={breed}
-              >
-                <option value="">Wybierz rasę</option>
-                <option value="dog">Pies</option>
-                <option value="cat">Kot</option>
-                <option value="other">Inne</option>
-              </select>
-            </div>
-            <div>
-              <h2>Opis zwierzaka</h2>
-              <textarea
-                type="text"
-                onChange={(e) => setDescription(e.target.value)}
-                value={description}
-                required
-                cols="30"
-                rows="10"
-              ></textarea>
-            </div>
-            <div>
-              <h2>Rejon Zaginięcia/Miejsce pobytu</h2>
+              <h2>Zdjęcie zwierzaka</h2>
               <input
-                type="text"
-                required
-                onChange={(e) => setWhereabouts(e.target.value)}
-                value={whereabouts}
+                type="file"
+                onChange={handleFileChange}
               />
+              {imgError ? <p>{imgError}</p> : ""}
             </div>
-            <div>
-              <h2>Twój numer telefonu</h2>
-              <input
-                type="text"
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                value={phoneNumber}
-              />
-            </div>
-            <button type="submit">Zapisz Dane</button>
+          )}
+          <div>
+            <h2>Rasa zwierzaka</h2>
+            <select
+              onChange={(e) => setBreed(e.target.value)}
+              required
+              value={breed}
+            >
+              <option value="">Wybierz rasę</option>
+              <option value="dog">Pies</option>
+              <option value="cat">Kot</option>
+              <option value="other">Inne</option>
+            </select>
+          </div>
+          <div>
+            <h2>Opis zwierzaka</h2>
+            <textarea
+              type="text"
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+              required
+              cols="30"
+              rows="10"
+            ></textarea>
+          </div>
+          <div>
+            <h2>Rejon Zaginięcia/Miejsce pobytu</h2>
+            <input
+              type="text"
+              required
+              onChange={(e) => setWhereabouts(e.target.value)}
+              value={whereabouts}
+            />
+          </div>
+          <div>
+            <h2>Twój numer telefonu</h2>
+            <input
+              type="text"
+              required
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              value={phoneNumber}
+            />
+          </div>
+          {!state.isPending && <button type="submit">Zapisz Dane</button>}
+          {state.isPending && <button disabled>loading</button>}
 
-            {formError && <p>{formError}</p>}
-          </form>
-          <Link href={`/show/${user.uid}`}>
-            Pokaż szczegóły rejestracji mojego zwierzaka
-          </Link>
-        </>
-      ) : (
-        <p>
-          Możesz zarejestrować tylko jednego zwierzaka dla jednego konta
-          użytkownika
-        </p>
-      )}
-    </div>
-  );
+          {formError && <p>{formError}</p>}
+        </form>
+        {state.error && <p>{state.error}</p>}
+
+        <Link href={`/show/${userId}`}>
+          Pokaż szczegóły rejestracji mojego zwierzaka
+        </Link>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        Z jednego konta użytkownika można zarejestrować tylko jednego zwierzaka.
+      </div>
+    );
+  }
 };
 
 export default Details;

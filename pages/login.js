@@ -37,7 +37,9 @@ const Login = () => {
           />
         </div>
         <button>Zaloguj</button>
+        {error && <p>{error}</p>}
       </form>
+
       {user && (
         <>
           <Link href={`/show/${user.uid}`}>

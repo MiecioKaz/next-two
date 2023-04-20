@@ -25,7 +25,8 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   let results = [];
   const q = query(
-    collection(db, params.opt),
+    collection(db, "pets"),
+    where("coll", "==", params.opt),
     where("breed", "==", params.breed)
   );
   const querySnap = await getDocs(q);

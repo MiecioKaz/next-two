@@ -52,7 +52,7 @@ export const useFirestore = () => {
   const [state, dispatch] = useReducer(firestoreReducer, initialState);
   const { user } = useAuthContext();
 
-  const addDocument = async (petDetails, coll, petImage, breed) => {
+  const addDocument = async (petDetails, petImage, docId) => {
     dispatch({ type: "IS_PENDING" });
 
     try {
@@ -60,12 +60,12 @@ export const useFirestore = () => {
       if (petImage) {
         const uploadPath = ref(
           storage,
-          `${coll}/${breed}/${user.uid}/${petImage.name}`
+          `${petDetails.coll}/${petDetails.breed}/${docId}/${petImage.name}`
         );
         await uploadBytes(uploadPath, petImage);
         imgUrl = await getDownloadURL(ref(storage, uploadPath));
 
-        await addDoc(collection(db, coll), {
+        await setDoc(doc(db, "pets", docId), {
           ...petDetails,
           petImageUrl: imgUrl,
         });
@@ -74,23 +74,17 @@ export const useFirestore = () => {
           payload: { ...petDetails, petImageUrl: imgUrl },
         });
       } else {
-        await addDoc(collection(db, coll), {
+        await setDoc(doc(db, "pets", docId), {
           ...petDetails,
         });
         dispatch({ type: "ADDED_DOCUMENT", payload: petDetails });
       }
-
-      await addDoc(collection(db, "users"), {
-        name: user.displayName,
-        id: user.uid,
-        collName: coll,
-      });
     } catch (err) {
       dispatch({ type: "ERROR", payload: err.message });
     }
   };
 
-  const updateDocument = async (petDetails, petDoc, userDoc, petImage) => {
+  const updateDocument = async (petDetails, petDoc, userId, petImage) => {
     dispatch({ type: "IS_PENDING" });
 
     try {
@@ -98,12 +92,12 @@ export const useFirestore = () => {
       if (petImage) {
         const uploadPath = ref(
           storage,
-          `${userDoc[0].collName}/${petDoc[0].breed}/${petDoc[0].id}/${petImage.name}`
+          `${petDetails.coll}/${petDetails.breed}/${petDetails.docId}/${petImage.name}`
         );
         await uploadBytes(uploadPath, petImage);
         imgUrl = await getDownloadURL(ref(storage, uploadPath));
 
-        await setDoc(doc(db, userDoc[0].collName, petDoc[0].docId), {
+        await setDoc(doc(db, "pets", userId), {
           ...petDetails,
           petImageUrl: imgUrl,
         });
@@ -112,9 +106,9 @@ export const useFirestore = () => {
           payload: { ...petDetails, petImageUrl: imgUrl },
         });
       } else {
-        if ("petImageUrl" in petDoc[0]) {
-          imgUrl = petDoc[0].petImageUrl;
-          await setDoc(doc(db, userDoc[0].collName, petDoc[0].docId), {
+        if ("petImageUrl" in petDoc) {
+          imgUrl = petDoc.petImageUrl;
+          await setDoc(doc(db, "pets", userId), {
             ...petDetails,
             petImageUrl: imgUrl,
           });
@@ -123,7 +117,7 @@ export const useFirestore = () => {
             payload: { ...petDetails, petImageUrl: imgUrl },
           });
         } else {
-          await setDoc(doc(db, userDoc[0].collName, petDoc[0].docId), {
+          await setDoc(doc(db, "pets", userId), {
             ...petDetails,
           });
           dispatch({ type: "UPDATED_DOCUMENT", payload: petDetails });
@@ -134,20 +128,20 @@ export const useFirestore = () => {
     }
   };
 
-  const deleteDocument = async (petDoc, userDoc) => {
+  const deleteDocument = async (petDoc, userId) => {
     try {
-      if ("petImageUrl" in petDoc[0]) {
-        const imgRef = ref(storage, petDoc[0].petImageUrl);
+      if ("petImageUrl" in petDoc) {
+        const imgRef = ref(storage, petDoc.petImageUrl);
         await deleteObject(imgRef);
       }
-      await deleteDoc(doc(db, userDoc[0].collName, petDoc[0].docId));
-      await deleteDoc(doc(db, "users", userDoc[0].userDocId));
+      await deleteDoc(doc(db, "pets", userId));
+
       dispatch({ type: "DELETED_DOCUMENT" });
     } catch (err) {
       dispatch({ type: "ERROR", payload: err.message });
     }
   };
-  console.log(state.document);
+  console.log(state.error);
 
   return { state, addDocument, updateDocument, deleteDocument };
 };
