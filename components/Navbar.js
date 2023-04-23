@@ -1,9 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
-  const { logout } = useLogout();
+  const { user } = useAuthContext();
+  const { logout, error } = useLogout();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    if (!error) {
+      router.push("/");
+    }
+  };
 
   return (
     <nav className="fixed top-0 w-screen flex justify-between items-center h-24 mt-24 bg-slate-200">
@@ -32,25 +43,30 @@ const Navbar = () => {
             <path d="M9.6 40.35V24.4H2.9L24 5.45l9.55 8.4v-5.1h4.85v9.6l6.7 6.05h-6.7v15.95h-9.9V28.8h-9v11.55Zm9.9-19.9h9q0-1.85-1.325-3.05Q25.85 16.2 24 16.2q-1.8 0-3.15 1.2-1.35 1.2-1.35 3.05Z" />
           </svg>
         </Link>
-        <Link
-          href="/signup"
-          className="text-gray-600 hover:text-lime-500"
-        >
-          Zarejestruj
-        </Link>
-        <Link
-          href="/login"
-          className="text-gray-600 hover:text-lime-500"
-        >
-          Zaloguj
-        </Link>
-        <Link
-          onClick={logout}
-          href="/"
+        {!user && (
+          <>
+            <Link
+              href="/signup"
+              className="text-gray-600 hover:text-lime-500"
+            >
+              Zarejestruj
+            </Link>
+
+            <Link
+              href="/login"
+              className="text-gray-600 hover:text-lime-500"
+            >
+              Zaloguj
+            </Link>
+          </>
+        )}
+
+        <button
+          onClick={handleLogout}
           className="text-gray-600 hover:text-lime-500"
         >
           Wyloguj
-        </Link>
+        </button>
       </div>
       <div className="inline-flex h-1/2">
         <Image

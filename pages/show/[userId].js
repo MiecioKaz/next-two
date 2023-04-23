@@ -4,8 +4,8 @@ import { db } from "../../firebase/config";
 import { useState } from "react";
 import Update from "../../components/Update";
 import { useFirestore } from "../../hooks/useFirestore";
-import { useLogout } from "../../hooks/useLogout";
 import { useRouter } from "next/router";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 export async function getServerSideProps(context) {
   const { userId } = context.params;
@@ -26,37 +26,29 @@ export async function getServerSideProps(context) {
 
 const Show = ({ petDoc }) => {
   const [isDisplayed, setIsDisplayed] = useState(false);
-  const { deleteDocument, state } = useFirestore();
-  const { userDelete } = useLogout();
+  const { state } = useFirestore();
   const router = useRouter();
   const { userId } = router.query;
-
-  const handleDelete = async () => {
-    await deleteDocument(petDoc, userId);
-    if (!state.error) {
-      router.push("/");
-    }
-  };
-
-  const handleDeleteUser = async () => {
-    await deleteDocument(petDoc, userId);
-    userDelete();
-    if (!state.error) {
-      router.push("/");
-    }
-  };
+  const { user } = useAuthContext();
 
   if (petDoc) {
     return (
       <div>
         {!isDisplayed && (
           <>
-            <button onClick={handleDeleteUser}>Usuń konto użytkownika</button>
-            <button onClick={handleDelete}>Usuń dane zwierzaka</button>
-            <button onClick={() => setIsDisplayed(true)}>Edytuj</button>
+            {!state.isPending ? (
+              <button onClick={() => setIsDisplayed(true)}>Edytuj</button>
+            ) : (
+              <button>Czekaj</button>
+            )}
 
             <div>
-              <h1>Wykaz danych zarejestrowanego zwierzaka</h1>
+              {user && (
+                <h1>
+                  Wykaz danych zwierzaka zarejestrowanego przez{" "}
+                  {user.displayName}
+                </h1>
+              )}
               <div className="relative block w-72 h-72">
                 <Image
                   src={petDoc.petImageUrl}
@@ -74,6 +66,7 @@ const Show = ({ petDoc }) => {
               <h2>Adres email: {petDoc.createdBy.email}</h2>
               <h2>Numer telefonu: {petDoc.createdBy.phoneNumber}</h2>
             </div>
+            {state.error && <div>{error}</div>}
           </>
         )}
         <div>

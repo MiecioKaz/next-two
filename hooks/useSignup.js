@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
 
 export const useSignup = () => {
-  const [isCancelled, setIsCancelled] = useState(false);
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const { dispatch } = useAuthContext();
@@ -13,31 +12,24 @@ export const useSignup = () => {
     setError(null);
     setIsPending(true);
 
-    try {
-      const res = await createUserWithEmailAndPassword(auth, email, password);
-
-      if (!res) {
-        throw new Error("Could not complete signup");
-      }
-
-      await updateProfile(res.user, { displayName });
-
-      dispatch({ type: "LOGIN", payload: res.user });
-      if (!isCancelled) {
-        setError(null);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        if (!userCredential) {
+          throw new Error("Wystąpił błąd rejestracji użytkownika.");
+        }
+        const user = userCredential.user;
+        updateProfile(user, { displayName }).then(() => {
+          dispatch({ type: "LOGIN", payload: user });
+          setError(null);
+          setIsPending(false);
+        });
+      })
+      .catch((error) => {
+        setError(error.message);
         setIsPending(false);
-      }
-    } catch (err) {
-      if (!isCancelled) {
-        setError(err.message);
-        setIsPending(false);
-      }
-    }
+      });
   };
-
-  useEffect(() => {
-    return () => setIsCancelled(true);
-  }, []);
+  console.log(error);
 
   return { signup, error, isPending };
 };

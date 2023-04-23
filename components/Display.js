@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 
-const Display = ({ details }) => {
+const Display = ({ details, toggleDisplay }) => {
   return (
     <div>
       <h1>Wykaz danych zarejestrowanego zwierzaka po edycji</h1>
@@ -20,6 +21,10 @@ const Display = ({ details }) => {
       <h2>Imię: {details.createdBy.name}</h2>
       <h2>Adres email: {details.createdBy.email}</h2>
       <h2>Numer telefonu: {details.createdBy.phoneNumber}</h2>
+      <div>
+        <Link href="/">Wróć do strony głównej</Link>
+        <button onClick={toggleDisplay}>Wróć do strony edycji</button>
+      </div>
     </div>
   );
 };

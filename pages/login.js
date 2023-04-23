@@ -16,32 +16,38 @@ const Login = () => {
 
   return (
     <div>
-      <h1>Logowanie użytkownika</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <h2>Twój email adres</h2>
-          <input
-            type="email"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
-        </div>
-        <div>
-          <h2>Twoje hasło</h2>
-          <input
-            type="password"
-            required
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-          />
-        </div>
-        <button>Zaloguj</button>
-        {error && <p>{error}</p>}
-      </form>
+      {!user && (
+        <>
+          <h1>Logowanie użytkownika</h1>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <h2>Twój email adres</h2>
+              <input
+                type="email"
+                required
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+              />
+            </div>
+            <div>
+              <h2>Twoje hasło</h2>
+              <input
+                type="password"
+                required
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+            </div>
+            {!isPending ? <button>Zaloguj</button> : <button>Czekaj</button>}
+            {error && <p>{error}</p>}
+          </form>
+        </>
+      )}
 
       {user && (
         <>
+          <h2>Witaj{user.displayName}</h2>
+          <p>Jesteś zalogowany do systemu</p>
           <Link href={`/show/${user.uid}`}>
             Pokaż szczegóły rejestracji mojego zwierzaka
           </Link>

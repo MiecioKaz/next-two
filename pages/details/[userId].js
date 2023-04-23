@@ -27,6 +27,7 @@ const Details = ({ isDocument }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [formError, setFormError] = useState(null);
   const [imgError, setImgError] = useState(null);
+  const [showButton, setShowButton] = useState(false);
   const { addDocument, state } = useFirestore();
   const router = useRouter();
   const { userId } = router.query;
@@ -81,9 +82,6 @@ const Details = ({ isDocument }) => {
     };
 
     await addDocument(petDetails, petImage, userId);
-    if (!state.error) {
-      router.push("/");
-    }
   };
 
   if (!isDocument) {
@@ -157,16 +155,22 @@ const Details = ({ isDocument }) => {
               value={phoneNumber}
             />
           </div>
-          {!state.isPending && <button type="submit">Zapisz Dane</button>}
-          {state.isPending && <button disabled>loading</button>}
+          {!state.isPending && !state.success && (
+            <button type="submit">Zapisz Dane</button>
+          )}
+          {state.isPending && !state.success && (
+            <button disabled>loading</button>
+          )}
 
           {formError && <p>{formError}</p>}
         </form>
         {state.error && <p>{state.error}</p>}
 
-        <Link href={`/show/${userId}`}>
-          Pokaż szczegóły rejestracji mojego zwierzaka
-        </Link>
+        {state.success && (
+          <Link href={`/show/${userId}`}>
+            Pokaż szczegóły rejestracji mojego zwierzaka
+          </Link>
+        )}
       </div>
     );
   } else {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { auth } from "../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -6,7 +6,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 export const useLogin = () => {
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  const [isCancelled, setIsCancelled] = useState(false);
   const { dispatch } = useAuthContext();
 
   const login = async (email, password) => {
@@ -15,6 +14,9 @@ export const useLogin = () => {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        if (!userCredential) {
+          throw new Error("Wystąpił błąd logowania użytkownika.");
+        }
         const user = userCredential.user;
 
         dispatch({ type: "LOGIN", payload: user });

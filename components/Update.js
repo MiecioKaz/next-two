@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useFirestore } from "../hooks/useFirestore";
+import { useLogout } from "../hooks/useLogout";
 import Display from "./Display";
-// import { setDoc, doc } from "firebase/firestore";
-// import { db, storage } from "../firebase/config";
-// import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useRouter } from "next/router";
 
 const Update = ({ petDoc, userId }) => {
   const [description, setDescription] = useState(petDoc.description);
@@ -14,7 +13,11 @@ const Update = ({ petDoc, userId }) => {
   const [name, setName] = useState(petDoc.createdBy.name);
   const [petImage, setPetImage] = useState(null);
   const [imgError, setImgError] = useState(null);
-  const { updateDocument, state } = useFirestore();
+  const [showDisplay, setShowDisplay] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const { deleteDocument, updateDocument, state, error } = useFirestore();
+  const { userDelete } = useLogout();
+  const router = useRouter();
 
   const handleFileChange = (e) => {
     setPetImage(null);
@@ -30,10 +33,6 @@ const Update = ({ petDoc, userId }) => {
       );
       return;
     }
-    // if (selected.size > 100000) {
-    //   setImgError("Image file size must be less than 100kB");
-    //   return;
-    // }
 
     setImgError(null);
     setPetImage(selected);
@@ -41,10 +40,6 @@ const Update = ({ petDoc, userId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // const collName = userDoc[0].collName;
-    // const docId = petDoc[0].docId;
-    // const imgUrl = petDoc[0].petImageUrl;
 
     const createdBy = {
       name,
@@ -62,12 +57,46 @@ const Update = ({ petDoc, userId }) => {
     };
 
     await updateDocument(petDetails, petDoc, userId, petImage);
+    if (!state.error) {
+      setShowButton(true);
+    }
+  };
+
+  const handleDelete = async () => {
+    await deleteDocument(petDoc, userId);
+    if (!state.error) {
+      router.push("/");
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    await deleteDocument(petDoc, userId);
+    userDelete();
+    if (!state.error) {
+      router.push("/");
+    }
+  };
+
+  const toggleDisplay = () => {
+    setShowDisplay(!showDisplay);
+    setShowButton(false);
   };
 
   return (
     <div>
-      {!state.success && (
+      {!showDisplay && (
         <>
+          {!state.isPending ? (
+            <button onClick={handleDeleteUser}>Usuń konto użytkownika</button>
+          ) : (
+            <button>Czekaj</button>
+          )}
+          {!state.isPending ? (
+            <button onClick={handleDelete}>Usuń dane zwierzaka</button>
+          ) : (
+            <button>Czekaj</button>
+          )}
+
           <form onSubmit={handleSubmit}>
             {petDoc.coll !== "newHome" && (
               <div>
@@ -143,12 +172,25 @@ const Update = ({ petDoc, userId }) => {
                 value={whereabouts}
               />
             </div>
-
-            <button>Edytuj</button>
+            {!state.isPending && !showButton && (
+              <button type="submit">Edytuj</button>
+            )}
+            {state.isPending && !showButton && (
+              <button disabled>loading</button>
+            )}
           </form>
+          {state.error && <div>{error}</div>}
         </>
       )}
-      {state.success && <Display details={state.document} />}
+      {showButton && (
+        <button onClick={toggleDisplay}>Pokaż dane po edycji</button>
+      )}
+      {showDisplay && (
+        <Display
+          details={state.document}
+          toggleDisplay={toggleDisplay}
+        />
+      )}
     </div>
   );
 };
