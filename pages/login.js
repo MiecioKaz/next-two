@@ -20,7 +20,7 @@ const Login = () => {
     login(email, password);
   };
 
-  const handleDeleteUser = async () => {
+  const handleDeleteUser = () => {
     userDelete();
 
     if (!err) {
