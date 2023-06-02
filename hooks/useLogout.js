@@ -4,43 +4,41 @@ import { auth } from "../firebase/config";
 import { useAuthContext } from "./useAuthContext";
 
 export const useLogout = () => {
-  const [error, setError] = useState(null);
-  const [isPending, setIsPending] = useState(false);
-  const { dispatch } = useAuthContext();
+  const [err, setErr] = useState(null);
+  const [isPend, setIsPend] = useState(false);
+  const { dispatch, user } = useAuthContext();
 
   const logout = () => {
-    setError(false);
-    setIsPending(true);
+    setErr(false);
+    setIsPend(true);
 
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
         dispatch({ type: "LOGOUT" });
-        setError(null);
-        setIsPending(false);
+        setErr(null);
+        setIsPend(false);
       })
       .catch((error) => {
-        setError(error.message);
-        setIsPending(false);
+        setErr(error.message);
+        setIsPend(false);
       });
   };
 
   const userDelete = () => {
-    setError(false);
-    setIsPending(true);
+    setErr(false);
+    setIsPend(true);
 
-    const user = auth.currentUser;
     deleteUser(user)
       .then(() => {
         dispatch({ type: "LOGOUT" });
-        setError(null);
-        setIsPending(false);
+        setErr(null);
+        setIsPend(false);
       })
       .catch((error) => {
-        setError(error.message);
-        setIsPending(false);
+        setErr(error.message);
+        setIsPend(false);
       });
   };
 
-  return { logout, userDelete, error, isPending };
+  return { logout, userDelete, err, isPend };
 };

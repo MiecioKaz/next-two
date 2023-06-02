@@ -28,7 +28,6 @@ export const useLogin = () => {
         setIsPending(false);
       });
   };
-  console.log(error);
 
   return { login, error, isPending };
 };

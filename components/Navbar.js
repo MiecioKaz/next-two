@@ -2,16 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useLangContext } from "../hooks/useLangContext";
 import { useRouter } from "next/router";
 
 const Navbar = () => {
   const { user } = useAuthContext();
-  const { logout, error } = useLogout();
+  const { polish, english, dispatch } = useLangContext();
+  const { logout, err } = useLogout();
   const router = useRouter();
 
   const handleLogout = () => {
     logout();
-    if (!error) {
+    if (!err) {
       router.push("/");
     }
   };
@@ -49,40 +51,57 @@ const Navbar = () => {
               href="/signup"
               className="text-gray-600 hover:text-lime-500"
             >
-              Zarejestruj
+              {polish && "Zarejestruj"}
+              {english && "Signup"}
             </Link>
 
             <Link
               href="/login"
               className="text-gray-600 hover:text-lime-500"
             >
-              Zaloguj
+              {polish && "Zaloguj"}
+              {english && "Login"}
             </Link>
           </>
+        )}
+
+        {user && (
+          <Link
+            href={`/show/${user.uid}`}
+            className="text-gray-600 hover:text-lime-500"
+          >
+            {polish && "Zwierzak"}
+            {english && "Pet"}
+          </Link>
         )}
 
         <button
           onClick={handleLogout}
           className="text-gray-600 hover:text-lime-500"
         >
-          Wyloguj
+          {polish && "Wyloguj"}
+          {english && "Logout"}
         </button>
       </div>
       <div className="inline-flex h-1/2">
-        <Image
-          src="/images/icons8-poland-48.png"
-          alt="Poland icon by Icons8"
-          className="hover:opacity-50"
-          width={48}
-          height={48}
-        />
-        <Image
-          src="/images/icons8-great-britain-48.png"
-          alt="Great Britain icon by Icons8"
-          className="mx-4 hover:opacity-50"
-          width={48}
-          height={48}
-        />
+        <button onClick={() => dispatch({ type: "POLISH" })}>
+          <Image
+            src="/images/icons8-poland-48.png"
+            alt="Poland icon by Icons8"
+            className="hover:opacity-50"
+            width={48}
+            height={48}
+          />
+        </button>
+        <button onClick={() => dispatch({ type: "ENGLISH" })}>
+          <Image
+            src="/images/icons8-great-britain-48.png"
+            alt="Great Britain icon by Icons8"
+            className="mx-4 hover:opacity-50"
+            width={48}
+            height={48}
+          />
+        </button>
       </div>
     </nav>
   );

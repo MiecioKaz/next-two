@@ -1,7 +1,6 @@
-import { useReducer, useState } from "react";
-import { collection, addDoc, doc, setDoc, deleteDoc } from "firebase/firestore";
+import { useReducer } from "react";
+import { doc, setDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db, storage } from "../firebase/config";
-import { useAuthContext } from "./useAuthContext";
 import {
   ref,
   uploadBytes,
@@ -13,7 +12,7 @@ let initialState = {
   document: null,
   isPending: false,
   error: null,
-  success: null,
+  success: false,
 };
 
 const firestoreReducer = (state, action) => {
@@ -50,7 +49,6 @@ const firestoreReducer = (state, action) => {
 
 export const useFirestore = () => {
   const [state, dispatch] = useReducer(firestoreReducer, initialState);
-  const { user } = useAuthContext();
 
   const addDocument = async (petDetails, petImage, docId) => {
     dispatch({ type: "IS_PENDING" });
@@ -101,6 +99,9 @@ export const useFirestore = () => {
           ...petDetails,
           petImageUrl: imgUrl,
         });
+        const imgRef = ref(storage, petDoc.petImageUrl);
+        await deleteObject(imgRef);
+
         dispatch({
           type: "UPDATED_DOCUMENT",
           payload: { ...petDetails, petImageUrl: imgUrl },
@@ -129,6 +130,8 @@ export const useFirestore = () => {
   };
 
   const deleteDocument = async (petDoc, userId) => {
+    dispatch({ type: "IS_PENDING" });
+
     try {
       if ("petImageUrl" in petDoc) {
         const imgRef = ref(storage, petDoc.petImageUrl);
@@ -141,7 +144,8 @@ export const useFirestore = () => {
       dispatch({ type: "ERROR", payload: err.message });
     }
   };
-  console.log(state.error);
+
+  console.log(state.success);
 
   return { state, addDocument, updateDocument, deleteDocument };
 };

@@ -20,19 +20,19 @@ const Footer = () => {
       <div>
         <a
           href="https://www.koty.pl/artykuly/porady/gdy-zaginie-twoj-kot"
-          className="block block hover:underline"
+          className="block hover:underline"
         >
           Co robić gdy zaginie kot
         </a>
         <a
           href="https://kakadu.pl/blog/zaginiecie-psa-co-robic/"
-          className="block block hover:underline"
+          className="block hover:underline"
         >
           Co robić gdy zaginie pies
         </a>
         <a
           href="https://www.telekarma-blog.pl/2022/06/co-zrobic-gdy-nasza-papuga-ucieknie.html#:~:text=Trzeba%20to%20zrobi%C4%87%20ostro%C5%BCnie%2C%20bo,ha%C5%82asu%20ani%20nie%20formujmy%20zbiorowiska."
-          className="block block hover:underline"
+          className="block hover:underline"
         >
           Co robić gdy ucieknie papuga
         </a>
