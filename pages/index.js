@@ -1,192 +1,178 @@
 import Link from "next/link";
+import { Exo, Cinzel } from "next/font/google";
+import { useLangContext } from "../hooks/useLangContext";
+
+const exo = Exo({
+  subsets: ["latin"],
+  weight: "600",
+  variable: "--font-exo",
+});
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: "600",
+  variable: "--font-cinzel",
+});
 
 export default function Home() {
+  const { polish, english } = useLangContext();
+
   return (
-    <div className="text-center">
-      <h1 className="text-4xl text-gray-600 my-14 italic">
-        Zwierzęta domowe Polaków w UK
-      </h1>
-      <div className="flex justify-between items-center w-11/12 h-40 border rounded-lg drop-shadow-lg mt-10 mx-auto p-10 bg-orange-50">
-        <h2 className="inline-block w-1/2 text-3xl text-gray-600">
-          Zaginął twój zwierzak i chcesz go odnależć
-        </h2>
-
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="48"
-          width="48"
-          className="fill-blue-700"
+    <>
+      <div className="w-11/12 md:w-10/12 lg:w-1/2 mx-auto p-12 text-center">
+        <h1
+          className={`${exo.variable} font-sans mb-4 text-3xl md:text-4xl text-gray-600`}
         >
-          <path d="m24 40-2.1-2.15L34.25 25.5H8v-3h26.25L21.9 10.15 24 8l16 16Z" />
-        </svg>
-
-        <div className="relative group inline-block w-1/4">
-          <h2 className="text-gray-600 hover:text-teal-300">
-            Pokaż listę zarejestrowanych, przygarniętych zwierzaków
-          </h2>
-          <ul className="absolute top-0 -left-16 hidden group-hover:block">
-            <li>
-              <Link
-                href="/petList/found/dog"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
-              >
-                Psy
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/petList/found/cat"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
-              >
-                Koty
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/petList/found/other"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
-              >
-                Inne
-              </Link>
-            </li>
-          </ul>
-        </div>
+          POL-PETS
+        </h1>
+        <p className={`${cinzel.variable} font-serif text-gray-600`}>
+          {polish &&
+            "Platforma kontaktowa dla właścicieli zwierząt domowych, skierowana głównie do polskiej społeczności w UK."}
+          {english &&
+            "Communication platform for pet owners, aimed primarily to polish community in UK."}
+        </p>
       </div>
-      <div className="flex justify-between items-center w-11/12 h-40 border rounded-lg drop-shadow-lg mt-10 mx-auto p-10 bg-lime-50">
-        <h2 className="inline-block w-1/2 text-3xl text-gray-600">
-          Przygarnąłeś zabłąkanego zwierzaka i chcesz pomóc mu wrócić do domu
-        </h2>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="48"
-          width="48"
-          className="fill-blue-700"
-        >
-          <path d="m24 40-2.1-2.15L34.25 25.5H8v-3h26.25L21.9 10.15 24 8l16 16Z" />
-        </svg>
 
-        <div className="relative group inline-block w-1/4">
-          <h2 className="text-gray-600 hover:text-teal-300">
-            Pokaż listę osób poszukujących swoich zwierząt
+      <div className="grid lg:grid-cols-2 gap-8 w-11/12 mx-auto mb-10 text-center text-gray-600">
+        <div className="flex flex-col justify-between border-2 rounded-lg shadow-md p-6 h-52 lg:h-60 bg-white">
+          <h2 className="text-lg text-violet-900">
+            {polish && "Zaginął twój zwierzak i chcesz go odnależć"}
+            {english && "Your pet has been lost and you want to find it"}
           </h2>
-          <ul className="absolute top-0 -left-16 hidden group-hover:block">
-            <li>
+          <hr className="m-6 border-black" />
+          <div className="relative group w-3/4 md:w-1/2 mx-auto text-xs md:text-sm hover:bg-sky-100">
+            {polish && "Pokaż listę znalezionych i przygarniętych zwierzaków"}
+            {english && "Show the list of found and taken in pets"}
+            <div className="absolute hidden group-hover:block w-full border-2 bg-slate-100">
               <Link
                 href="/petList/lost/dog"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
               >
-                Psy
+                {polish && "Psy"}
+                {english && "Dogs"}
               </Link>
-            </li>
-            <li>
               <Link
-                href="/petList/lost/cat"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
+                href="/petList/lost/dog"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
               >
-                Koty
+                {polish && "Koty"}
+                {english && "Cats"}
               </Link>
-            </li>
-            <li>
               <Link
-                href="/petList/lost/other"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
+                href="/petList/lost/dog"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
               >
-                Inne
+                {polish && "Inne"}
+                {english && "Other"}
               </Link>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="flex justify-between items-center w-11/12 h-40 border rounded-lg drop-shadow-lg mt-10 mx-auto p-10 bg-cyan-50">
-        <h2 className="inline-block w-1/2 text-3xl text-gray-600">
-          Szukasz nowego domu dla swojego zwierzaka
-        </h2>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="48"
-          width="48"
-          className="fill-blue-700"
-        >
-          <path d="m24 40-2.1-2.15L34.25 25.5H8v-3h26.25L21.9 10.15 24 8l16 16Z" />
-        </svg>
-
-        <div className="relative group inline-block w-1/4">
-          <h2 className="text-gray-600 hover:text-teal-300">
-            Pokaż listę potencjalnych nowych właścicieli
+        <div className="flex flex-col justify-between border-2 rounded-lg shadow-md p-4 h-52 lg:h-60 bg-white">
+          <h2 className="text-lg text-violet-900">
+            {polish &&
+              "Przygarnąłeś zabłąkanego zwierzaka i chcesz pomóc mu wrócić do domu"}
+            {english &&
+              "You found and took in a stray pet and you want to find its owner"}
           </h2>
-          <ul className="absolute top-0 -left-16 hidden group-hover:block">
-            <li>
+          <hr className="m-6 border-black" />
+          <div className="relative group w-3/4 md:w-1/2 mx-auto text-xs md:text-sm hover:bg-sky-100">
+            {polish && "Pokaż listę osób poszukujących swoich zwierząt"}
+            {english && "Show the list of looking for their pets people"}
+            <div className="absolute hidden group-hover:block w-full border-2 bg-slate-100">
               <Link
-                href="/petList/newHome/dog"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
+                href="/petList/lost/dog"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
               >
-                Psy
+                {polish && "Psy"}
+                {english && "Dogs"}
               </Link>
-            </li>
-            <li>
               <Link
-                href="/petList/newHome/cat"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
+                href="/petList/lost/dog"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
               >
-                Koty
+                {polish && "Koty"}
+                {english && "Cats"}
               </Link>
-            </li>
-            <li>
               <Link
-                href="/petList/newHome/other"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
+                href="/petList/lost/dog"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
               >
-                Inne
+                {polish && "Inne"}
+                {english && "Other"}
               </Link>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="flex justify-between items-center w-11/12 h-40 border rounded-lg drop-shadow-lg mt-10 mx-auto p-10 bg-violet-50">
-        <h2 className="inline-block w-1/2 text-3xl text-gray-600">
-          Szukasz zwierzaka do zamieszkania w twoim domu
-        </h2>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="48"
-          width="48"
-          className="fill-blue-700"
-        >
-          <path d="m24 40-2.1-2.15L34.25 25.5H8v-3h26.25L21.9 10.15 24 8l16 16Z" />
-        </svg>
-
-        <div className="relative group inline-block w-1/4">
-          <h2 className="text-gray-600 hover:text-teal-300">
-            Pokaż listę czekających na zmianę domu zwierzaków
+        <div className="flex flex-col justify-between border-2 rounded-lg shadow-md p-4 h-52 lg:h-60 bg-white">
+          <h2 className="text-lg text-violet-900">
+            {polish && "Szukasz nowego domu dla swojego zwierzaka"}
+            {english && "You are looking for new home for your pet"}
           </h2>
-          <ul className="absolute top-0 -left-16 hidden group-hover:block">
-            <li>
+          <hr className="m-6 border-black" />
+          <div className="relative group w-3/4 md:w-1/2 mx-auto text-xs md:text-sm hover:bg-sky-100">
+            {polish && "Pokaż listę potencjalnych nowych właścicieli"}
+            {english && "Show the list of potential new owners"}
+            <div className="absolute hidden group-hover:block w-full border-2 bg-slate-100">
               <Link
-                href="/petList/relocate/dog"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
+                href="/petList/lost/dog"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
               >
-                Psy
+                {polish && "Psy"}
+                {english && "Dogs"}
               </Link>
-            </li>
-            <li>
               <Link
-                href="/petList/relocate/cat"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
+                href="/petList/lost/dog"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
               >
-                Koty
+                {polish && "Koty"}
+                {english && "Cats"}
               </Link>
-            </li>
-            <li>
               <Link
-                href="/petList/relocate/other"
-                className="block px-4 py-2 text-gray-600 hover:text-teal-300 bg-gray-200"
+                href="/petList/lost/dog"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
               >
-                Inne
+                {polish && "Inne"}
+                {english && "Other"}
               </Link>
-            </li>
-          </ul>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between border-2 rounded-lg shadow-md p-4 h-52 lg:h-60 bg-white">
+          <h2 className="text-lg text-violet-900">
+            {polish && "Szukasz zwierzaka do zamieszkania w twoim domu"}
+            {english && "You are looking for a pet in need of adoption"}
+          </h2>
+          <hr className="m-6 border-black" />
+          <div className="relative group w-3/4 md:w-1/2 mx-auto text-xs md:text-sm hover:bg-sky-100">
+            {polish && "Pokaż listę czekających na zmianę domu zwierzaków"}
+            {english && "Show the list of pets ready to be rehomed"}
+            <div className="absolute hidden group-hover:block w-full border-2 bg-slate-100">
+              <Link
+                href="/petList/lost/dog"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
+              >
+                {polish && "Psy"}
+                {english && "Dogs"}
+              </Link>
+              <Link
+                href="/petList/lost/dog"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
+              >
+                {polish && "Koty"}
+                {english && "Cats"}
+              </Link>
+              <Link
+                href="/petList/lost/dog"
+                className="block h-10 pt-2 hover:bg-sky-600 hover:text-white"
+              >
+                {polish && "Inne"}
+                {english && "Other"}
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

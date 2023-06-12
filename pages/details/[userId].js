@@ -4,7 +4,9 @@ import { useFirestore } from "../../hooks/useFirestore";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
+// import { Timestamp } from "firebase/firestore";
 import Link from "next/link";
+import { useLangContext } from "../../hooks/useLangContext";
 
 export async function getServerSideProps(context) {
   const { userId } = context.params;
@@ -31,6 +33,7 @@ const Details = ({ isDocument }) => {
   const router = useRouter();
   const { userId } = router.query;
   const { user } = useAuthContext();
+  const { polish, english } = useLangContext();
 
   console.log(isDocument);
 
@@ -65,6 +68,10 @@ const Details = ({ isDocument }) => {
       return;
     }
 
+    const createdOn = new Date();
+    // const expireOn = createdOn.setDate(createdOn.getDate() + 30);
+    // const expire = Timestamp.fromDate(new Date(expireOn));
+
     const createdBy = {
       name: user.displayName,
       email: user.email,
@@ -72,6 +79,8 @@ const Details = ({ isDocument }) => {
     };
 
     const petDetails = {
+      createdOn,
+      // expire,
       coll: optionSet,
       breed,
       description,
@@ -85,31 +94,62 @@ const Details = ({ isDocument }) => {
 
   if (!isDocument) {
     return (
-      <div className="w-1/2 mx-auto mt-32 py-10 bg-stone-200">
-        <h1 className="text-center text-xl mb-8">Rejestracja zwierzaka</h1>
+      <div className="w-3/4 md:w-1/2 mx-auto mt-32 mb-10 py-10 bg-stone-200">
+        <h1 className="text-center text-lg md:text-xl mb-8">
+          {polish && "Rejestracja zwierzaka"}
+          {english && "Pet registration"}
+        </h1>
         <form onSubmit={handleSubmit}>
           <div className="w-5/6 mx-auto">
-            <h2>Powód rejestracji</h2>
+            <h2>
+              {polish && "Powód rejestracji"}
+              {english && "Reason of registration"}
+            </h2>
             <select
               className="w-full h-9 p-1 mb-4 mt-2"
               onChange={(e) => setOptionSet(e.target.value)}
               required
               value={optionSet}
             >
-              <option value="">Wybierz opcję</option>
-              <option value="lost">Zaginięcie</option>
-              <option value="found">Przygarnięcie</option>
-              <option value="relocate">Do oddania</option>
-              <option value="newHome">Do przyjęcia</option>
+              <option value="">
+                {polish && "Wybierz opcję"}
+                {english && "Choose option"}
+              </option>
+              <option value="lost">
+                {polish && "Zaginięcie zwierzaka"}
+                {english && "Searching lost pet"}
+              </option>
+              <option value="found">
+                {polish && "Przygarnięcie zwierzaka"}
+                {english && "Found & taken in pet"}
+              </option>
+              <option value="relocate">
+                {polish && "Zwierzak do adopcji"}
+                {english && "Awaiting adoption pet"}
+              </option>
+              <option value="newHome">
+                {polish && "Gotowy do adopcji zwierzaka"}
+                {english && "Ready to adopt pet"}
+              </option>
             </select>
           </div>
           {optionSet !== "newHome" && (
             <div className="w-5/6 mx-auto">
-              <h2>Zdjęcie zwierzaka</h2>
+              <h2>
+                {polish && "Zdjęcie zwierzaka"}
+                {english && "Pets picture"}
+              </h2>
               <label htmlFor="img-select">
-                <div className="w-full h-9 p-2 mb-4 mt-2 bg-white ">
-                  {petImage ? petImage.name : "Zdjęcie zwierzaka"}
-                </div>
+                {polish && (
+                  <div className="w-full h-9 p-2 mb-4 mt-2 bg-white ">
+                    {petImage ? petImage.name : "Zdjęcie zwierzaka"}
+                  </div>
+                )}
+                {english && (
+                  <div className="w-full h-9 p-2 mb-4 mt-2 bg-white ">
+                    {petImage ? petImage.name : "Pets picture"}
+                  </div>
+                )}
               </label>
               <input
                 id="img-select"
@@ -121,21 +161,39 @@ const Details = ({ isDocument }) => {
             </div>
           )}
           <div className="w-5/6 mx-auto">
-            <h2>Rasa zwierzaka</h2>
+            <h2>
+              {polish && "Rasa zwierzaka"}
+              {english && "Pets breed"}
+            </h2>
             <select
               className="w-full h-9 p-1 mb-4 mt-2"
               onChange={(e) => setBreed(e.target.value)}
               required
               value={breed}
             >
-              <option value="">Wybierz rasę</option>
-              <option value="dog">Pies</option>
-              <option value="cat">Kot</option>
-              <option value="other">Inne</option>
+              <option value="">
+                {polish && "Wybierz rasę zwierzaka"}
+                {english && "Choose pets breed"}
+              </option>
+              <option value="dog">
+                {polish && "Pies"}
+                {english && "Dog"}
+              </option>
+              <option value="cat">
+                {polish && "Kot"}
+                {english && "Cat"}
+              </option>
+              <option value="other">
+                {polish && "Inne"}
+                {english && "Other"}
+              </option>
             </select>
           </div>
           <div className="w-5/6 mx-auto">
-            <h2>Opis zwierzaka</h2>
+            <h2>
+              {polish && "Opis zwierzaka"}
+              {english && "Pets description"}
+            </h2>
             <textarea
               className="w-full p-1 mb-4 mt-2"
               type="text"
@@ -147,7 +205,10 @@ const Details = ({ isDocument }) => {
             ></textarea>
           </div>
           <div className="w-5/6 mx-auto">
-            <h2>Rejon Zaginięcia/Miejsce pobytu</h2>
+            <h2>
+              {polish && "Rejon Zaginięcia/Miejsce pobytu"}
+              {english && "Whereabouts"}
+            </h2>
             <input
               className="w-full h-9 p-1 mb-4 mt-2"
               type="text"
@@ -157,7 +218,10 @@ const Details = ({ isDocument }) => {
             />
           </div>
           <div className="w-5/6 mx-auto">
-            <h2>Twój numer telefonu</h2>
+            <h2>
+              {polish && "Twój numer telefonu"}
+              {english && "Your phone number"}
+            </h2>
             <input
               className="w-full h-9 p-1 mb-4 mt-2"
               type="text"
@@ -172,15 +236,17 @@ const Details = ({ isDocument }) => {
                 type="submit"
                 className="w-40 p-1 mt-8 border-2 rounded-2xl bg-amber-100 hover:border-rose-600"
               >
-                Zapisz Dane
+                {polish && "Zapisz Dane"}
+                {english && "Save details"}
               </button>
             )}
             {state.isPending && !state.success && (
               <button
-                className="w-32 p-1 mt-8 border-2 rounded-2xl bg-amber-100"
+                className="p-1 mt-8 border-2 rounded-2xl bg-amber-100"
                 disabled
               >
-                loading
+                {polish && "Zapisywanie..."}
+                {english && "Loading..."}
               </button>
             )}
           </div>
@@ -201,9 +267,10 @@ const Details = ({ isDocument }) => {
           {state.success && (
             <Link
               href={`/show/${userId}`}
-              className="text-cyan-600 hover:text-blue-800"
+              className="mx-4 text-cyan-600 hover:text-blue-800"
             >
-              Pokaż szczegóły rejestracji mojego zwierzaka
+              {polish && "Pokaż szczegóły rejestracji mojego zwierzaka"}
+              {english && "Show pet registration details"}
             </Link>
           )}
         </div>
@@ -212,7 +279,9 @@ const Details = ({ isDocument }) => {
   } else {
     return (
       <div className="w-1/2 mx-auto text-center mt-32 text-xl text-red-600">
-        Z jednego konta użytkownika można zarejestrować tylko jednego zwierzaka.
+        {polish &&
+          "Z jednego konta użytkownika można zarejestrować tylko jednego zwierzaka."}
+        {english && "One user cannot register more than one pet"}
       </div>
     );
   }

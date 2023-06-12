@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useFirestore } from "../hooks/useFirestore";
+import { useLangContext } from "../hooks/useLangContext";
 import Link from "next/link";
 
 const Update = ({ petDoc, userId }) => {
@@ -12,6 +13,7 @@ const Update = ({ petDoc, userId }) => {
   const [petImage, setPetImage] = useState(null);
   const [imgError, setImgError] = useState(null);
   const { updateDocument, state } = useFirestore();
+  const { polish, english } = useLangContext();
 
   const handleFileChange = (e) => {
     setPetImage(null);
@@ -55,18 +57,29 @@ const Update = ({ petDoc, userId }) => {
 
   return (
     <div className="bg-stone-200 py-6">
-      <h1 className="text-center text-xl text-indigo-700 mb-6">
-        Dane zwierzaka do edycji
+      <h1 className="text-center text-lg md:text-xl text-indigo-700 mb-6">
+        {polish && "Dane zwierzaka do edycji"}
+        {english && "Pet details before edition"}
       </h1>
 
       <form onSubmit={handleSubmit}>
         {petDoc.petImageUrl && (
           <div className="w-5/6 mx-auto">
-            <h2>Zdjęcie zwierzaka</h2>
+            <h2>
+              {polish && "Zdjęcie zwierzaka"}
+              {english && "Pets picture"}
+            </h2>
             <label htmlFor="img-select">
-              <div className="w-full h-9 px-2 py-1 mb-4 mt-2 bg-white ">
-                {petImage ? petImage.name : "Zdjęcie zwierzaka"}
-              </div>
+              {polish && (
+                <div className="w-full h-9 px-2 py-1 mb-4 mt-2 bg-white ">
+                  {petImage ? petImage.name : "Zdjęcie zwierzaka"}
+                </div>
+              )}
+              {english && (
+                <div className="w-full h-9 px-2 py-1 mb-4 mt-2 bg-white ">
+                  {petImage ? petImage.name : "Pets picture"}
+                </div>
+              )}
             </label>
             <input
               id="img-select"
@@ -79,22 +92,40 @@ const Update = ({ petDoc, userId }) => {
         )}
 
         <div className="w-5/6 mx-auto">
-          <h2>Rasa zwierzaka</h2>
+          <h2>
+            {polish && "Rasa zwierzaka"}
+            {english && "Pets breed"}
+          </h2>
           <select
             className="w-full h-9 p-1 mb-4 mt-2"
             onChange={(e) => setBreed(e.target.value)}
             required
             value={breed}
           >
-            <option value="">Wybierz rasę</option>
-            <option value="dog">Pies</option>
-            <option value="cat">Kot</option>
-            <option value="other">Inne</option>
+            <option value="">
+              {polish && "Wybierz rasę"}
+              {english && "Choose breed"}
+            </option>
+            <option value="dog">
+              {polish && "Pies"}
+              {english && "Dog"}
+            </option>
+            <option value="cat">
+              {polish && "Kot"}
+              {english && "Cat"}
+            </option>
+            <option value="other">
+              {polish && "Inne"}
+              {english && "Other"}
+            </option>
           </select>
         </div>
 
         <div className="w-5/6 mx-auto">
-          <h2>Twoje imię:</h2>
+          <h2>
+            {polish && "Twoje imię:"}
+            {english && "Your name:"}
+          </h2>
           <input
             className="w-full h-9 p-1 mb-4 mt-2"
             type="text"
@@ -105,7 +136,10 @@ const Update = ({ petDoc, userId }) => {
         </div>
 
         <div className="w-5/6 mx-auto">
-          <h2>Adres email:</h2>
+          <h2>
+            {polish && "Adres email:"}
+            {english && "Email address:"}
+          </h2>
           <input
             className="w-full h-9 p-1 mb-4 mt-2"
             type="text"
@@ -116,7 +150,10 @@ const Update = ({ petDoc, userId }) => {
         </div>
 
         <div className="w-5/6 mx-auto">
-          <h2>Twój numer telefonu</h2>
+          <h2>
+            {polish && "Numer telefonu"}
+            {english && "Phone number"}
+          </h2>
           <input
             className="w-full h-9 p-1 mb-4 mt-2"
             type="text"
@@ -126,7 +163,10 @@ const Update = ({ petDoc, userId }) => {
         </div>
 
         <div className="w-5/6 mx-auto">
-          <h2>Opis zwierzaka</h2>
+          <h2>
+            {polish && "Opis zwierzaka"}
+            {english && "Pet description"}
+          </h2>
           <textarea
             className="w-full p-1 mb-4 mt-2"
             type="text"
@@ -139,7 +179,10 @@ const Update = ({ petDoc, userId }) => {
         </div>
 
         <div className="w-5/6 mx-auto">
-          <h2>Rejon Zaginięcia/Miejsce pobytu</h2>
+          <h2>
+            {polish && "Rejon Zaginięcia/Miejsce pobytu"}
+            {english && "Whereabouts"}
+          </h2>
           <input
             className="w-full h-9 p-1 mb-4 mt-2"
             type="text"
@@ -148,29 +191,45 @@ const Update = ({ petDoc, userId }) => {
             value={whereabouts}
           />
         </div>
-        <div className="text-center text-lg my-6">
-          {!state.success && (
-            <button
-              type="submit"
-              className="w-32 p-1 border-2 rounded-2xl bg-amber-100 hover:border-rose-600"
-            >
-              {!state.isPending ? "Zmień dane" : "Czekaj"}
-            </button>
-          )}
-        </div>
+        {polish && (
+          <div className="text-center text-lg my-6">
+            {!state.success && (
+              <button
+                type="submit"
+                className="w-32 p-1 border-2 rounded-2xl bg-amber-100 hover:border-rose-600"
+              >
+                {!state.isPending ? "Zmień dane" : "Czekaj..."}
+              </button>
+            )}
+          </div>
+        )}
+        {english && (
+          <div className="text-center text-lg my-6">
+            {!state.success && (
+              <button
+                type="submit"
+                className="w-32 p-1 border-2 rounded-2xl bg-amber-100 hover:border-rose-600"
+              >
+                {!state.isPending ? "Change details" : "Wait..."}
+              </button>
+            )}
+          </div>
+        )}
       </form>
 
       <div className="text-center">
         {state.success && (
           <>
-            <p className="text-red-500 text-lg">
-              Pomyślnie zmieniłeś dane zwierzaka.
+            <p className="text-red-500 text-lg mb-6">
+              {polish && "Pomyślnie zmieniłeś dane zwierzaka."}
+              {english && "You changed pet details successfully"}
             </p>
             <Link
               href="/"
               className="text-lg text-fuchsia-700 hover:text-lime-500 mt-10"
             >
-              Wróć do strony głównej
+              {polish && "Wróć do strony głównej"}
+              {english && "Back to home page"}
             </Link>
           </>
         )}

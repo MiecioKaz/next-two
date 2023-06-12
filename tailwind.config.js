@@ -6,7 +6,12 @@ module.exports = {
   ],
 
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        serif: ["var(--font-cinzel)"],
+        sans: ["var(--font-exo)"],
+      },
+    },
   },
   plugins: [],
 };

@@ -29,10 +29,10 @@ const Login = () => {
   };
 
   return (
-    <div className="w-1/2 mx-auto mt-32 py-10 bg-stone-200">
+    <div className="w-3/4 md:w-1/2 mx-auto mt-20 mb-10 md:mt-32 py-10 bg-stone-200">
       {!user && (
         <>
-          <h1 className="text-center text-xl mb-8">
+          <h1 className="text-center text-lg md:text-xl mb-8">
             {polish && "Logowanie użytkownika"}
             {english && "User Login"}
           </h1>
@@ -66,7 +66,7 @@ const Login = () => {
             <div className="text-center">
               {polish && (
                 <button
-                  className="w-32 p-1 mt-8 border-2 rounded-2xl bg-amber-100 hover:border-rose-600"
+                  className="w-32 p-1 mt-8 border-2 rounded-2xl bg-teal-300 hover:border-rose-600"
                   type="submit"
                 >
                   {!isPending ? "Zaloguj" : "Czekaj..."}
@@ -74,7 +74,7 @@ const Login = () => {
               )}
               {english && (
                 <button
-                  className="w-32 p-1 mt-8 border-2 rounded-2xl bg-amber-100 hover:border-rose-600"
+                  className="w-32 p-1 mt-8 border-2 rounded-2xl bg-teal-300 hover:border-rose-600"
                   type="submit"
                 >
                   {!isPending ? "Login" : "Wait..."}
@@ -91,7 +91,7 @@ const Login = () => {
       )}
 
       {user && (
-        <div className="text-center text-xl">
+        <div className="text-center text-xl p-6">
           <h2 className="text-orange-800">
             {polish && `Witaj ${user.displayName}!`}
             {english && `Hello ${user.displayName}!`}
@@ -103,14 +103,14 @@ const Login = () => {
           <hr className="m-6 border-black" />
           <Link
             href={`/show/${user.uid}`}
-            className="inline-block mb-6 text-cyan-600 hover:text-blue-800"
+            className="block mb-6 text-cyan-600 hover:text-blue-800"
           >
             {polish && "Pokaż szczegóły rejestracji mojego zwierzaka"}
             {english && "Show my pet's details"}
           </Link>
           <Link
             href={`/details/${user.uid}`}
-            className="inline-block text-cyan-600 hover:text-blue-800"
+            className="block text-cyan-600 hover:text-blue-800"
           >
             {polish && "Zarejestruj zwierzaka"}
             {english && "Register pet"}
