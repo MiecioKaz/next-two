@@ -68,9 +68,7 @@ const Details = ({ isDocument }) => {
       return;
     }
 
-    const createdOn = new Date();
-    // const expireOn = createdOn.setDate(createdOn.getDate() + 30);
-    // const expire = Timestamp.fromDate(new Date(expireOn));
+    const createdAt = new Date().toDateString();
 
     const createdBy = {
       name: user.displayName,
@@ -79,8 +77,7 @@ const Details = ({ isDocument }) => {
     };
 
     const petDetails = {
-      createdOn,
-      // expire,
+      createdAt,
       coll: optionSet,
       breed,
       description,

@@ -31,5 +31,4 @@ yarn-error.log*
 # vercel
 .vercel
 
-# firebase credentials
-config.js
+
