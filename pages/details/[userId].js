@@ -4,7 +4,6 @@ import { useFirestore } from "../../hooks/useFirestore";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
-// import { Timestamp } from "firebase/firestore";
 import Link from "next/link";
 import { useLangContext } from "../../hooks/useLangContext";
 
